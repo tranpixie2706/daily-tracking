@@ -1,0 +1,1223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vegas Portal – Promotion Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&amp;display=swap">
+<style>body{margin:0;background:#efede7}
+a{color:#624f3d}a:hover{color:#3d3025}
+button{font-family:inherit}
+button:focus-visible{outline:2px solid #624f3d;outline-offset:2px}
+.hero button:focus-visible{outline-color:#f1ca6d}</style>
+</head>
+<body>
+<div id="app"></div>
+<template id="tpl-Main">
+
+<div style="font-family: Montserrat, sans-serif; color: #4d3d2e; background: linear-gradient(180deg,#efede7,#faf8f4); min-height: 100%; padding-bottom: 56px">
+
+  <!-- HERO -->
+  <header class="hero" style="{{heroStyle}}">
+    <div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+        <div style="display: flex; align-items: center; gap: 12px">
+          <svg width="14" height="27" viewBox="0 0 140 267.68" aria-hidden="true"><path d="M70 0 C 80 70, 105 110, 140 133.84 C 105 157.68, 80 197.68, 70 267.68 C 60 197.68, 35 157.68, 0 133.84 C 35 110, 60 70, 70 0 Z" fill="#ed1c24"></path></svg>
+          <span style="font-size: 12px; font-weight: 600; letter-spacing: .22em; color: rgba(255,255,255,.88)">VEGAS PORTAL · PROMOTION</span>
+          <span style="font-size: 10px; font-weight: 700; letter-spacing: .08em; padding: 4px 10px; border-radius: 999px; color: #3d3025; background: #f1ca6d">V2 · EXCL. HIDDEN JACKPOT</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px">
+        <sc-if value="{{notAlloc}}" hint-placeholder-val="{{ true }}">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 34px; line-height: 1.1; font-weight: 700; letter-spacing: .04em">DAILY TRACKING REPORT</h1>
+          <p style="margin: 0; font-size: 14px; font-weight: 300; font-style: italic; color: rgba(255,255,255,.88)">Updated November 18, 2026 · 06:00 AM</p>
+        </div>
+        </sc-if>
+        <div role="tablist" aria-label="Period" style="display: flex; gap: 4px; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.10); box-shadow: inset 0 1px 0 rgba(255,255,255,.35), inset 0 0 0 1px rgba(255,255,255,.14), 0 6px 16px -8px rgba(20,10,0,.35)">
+          <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+            <button role="tab" aria-selected="{{t.on}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <sc-if value="{{isAlloc}}" hint-placeholder-val="{{ false }}">
+    <dc-import name="StrategicTrack" hint-size="100%,1500px"></dc-import>
+  </sc-if>
+
+  <main style="max-width: 1360px; margin: -64px auto 0; padding: 0 40px; display: flex; flex-direction: column; gap: 24px; box-sizing: border-box">
+
+    <sc-if value="{{notCal}}" hint-placeholder-val="{{ true }}">
+
+      <!-- SUMMARY (one frame) -->
+      <section aria-label="Summary" style="background: #ffffff; border-radius: 24px; padding: 22px 26px; box-shadow: inset 0 1px 0 #ffffff, inset 0 0 0 1px rgba(98,79,61,.08), 0 8px 22px -12px rgba(98,79,61,.38); display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+          
+          <span style="font-size: 11px; font-weight: 500; color: #76634f; background: #f0e9d8; padding: 4px 10px; border-radius: 999px">{{scope}} · {{cmpShort}}</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 0">
+          <div style="flex: 1 1 240px; padding: 4px 24px 4px 0; display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: .14em; color: #76634f">TOTAL HEADCOUNT</span>
+            <span style="font-size: 44px; line-height: 1; font-weight: 700; color: #a8791f">{{sum.hc}}</span>
+            <span style="{{sum.hcStyle}}">{{sum.hcPct}}</span>
+          </div>
+          <div style="flex: 1 1 240px; padding: 4px 24px; border-left: 1px solid #e6dfcf; display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 11px; font-weight: 700; letter-spacing: .14em; color: #76634f">TOTAL EXPENSE</span>
+            <span style="font-size: 44px; line-height: 1; font-weight: 700; color: #a8791f">{{sum.exp}}</span>
+            <span style="{{sum.expStyle}}">{{sum.expPct}}</span>
+          </div>
+          <div style="flex: 1 1 260px; padding: 4px 0 4px 24px; border-left: 1px solid #e6dfcf; display: flex; align-items: center; gap: 20px">
+            <div style="display: flex; flex-direction: column; gap: 10px; flex: 1">
+              <span style="font-size: 11px; font-weight: 700; letter-spacing: .14em; color: #76634f">CASHABLE vs PLAYABLE</span>
+              <sc-for list="{{donut.parts}}" as="p" hint-placeholder-count="2">
+                <div style="display: flex; align-items: center; gap: 8px">
+                  <span style="width: 10px; height: 10px; border-radius: 999px; background: {{p.color}}; flex: none"></span>
+                  <span style="font-size: 12px; font-weight: 300; width: 64px">{{p.label}}</span>
+                  <span style="font-size: 16px; font-weight: 700">{{p.amt}}</span>
+                  <span style="font-size: 11px; font-weight: 300; color: #76634f">{{p.pct}}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMBO CHART -->
+      <section aria-label="Trend" style="background: #ffffff; border-radius: 24px; padding: 22px 26px; box-shadow: inset 0 1px 0 #ffffff, inset 0 0 0 1px rgba(98,79,61,.08), 0 8px 22px -12px rgba(98,79,61,.38); display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: .1em">HEADCOUNT &amp; EXPENSE</h2>
+            <span style="font-size: 11px; font-weight: 300; color: #76634f">{{chartSub}}</span>
+          </div>
+          <div role="group" aria-label="Breakdown" style="display: flex; gap: 3px; padding: 3px; border-radius: 999px; background: #f0e9d8">
+            <sc-for list="{{splitBtns}}" as="b" hint-placeholder-count="3"><button aria-pressed="{{b.on}}" onClick="{{b.pick}}" style="{{b.style}}">{{b.label}}</button></sc-for>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 10px; font-weight: 600; letter-spacing: .1em; color: #76634f; margin: 0 4px">
+          <span>HEADCOUNT</span><span>EXPENSE</span>
+        </div>
+        <div style="position: relative; height: 260px; margin: 0 60px 0 52px">
+          <sc-for list="{{grid}}" as="g" hint-placeholder-count="5">
+            <div style="position: absolute; left: 0; right: 0; top: {{g.top}}; border-top: 1px solid #efe9dc"></div>
+            <span style="position: absolute; left: -52px; width: 44px; text-align: right; top: {{g.labelTop}}; font-size: 10px; color: #76634f">{{g.left}}</span>
+            <span style="position: absolute; right: -60px; width: 52px; text-align: left; top: {{g.labelTop}}; font-size: 10px; color: #76634f">{{g.right}}</span>
+          </sc-for>
+          <div style="{{barGridStyle}}">
+            <sc-for list="{{bars}}" as="b" hint-placeholder-count="14">
+              <div onMouseEnter="{{b.enter}}" onMouseLeave="{{hoverOut}}" style="{{b.colStyle}}">
+                <div style="{{b.barStyle}}">
+                  <sc-for list="{{b.segs}}" as="s" hint-placeholder-count="3"><div style="height: {{s.h}}; background: {{s.c}}; flex: none"></div></sc-for>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <svg viewBox="0 0 1000 260" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none"><path d="{{lineD}}" fill="none" stroke="#3d3025" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path></svg>
+          <sc-for list="{{dots}}" as="d" hint-placeholder-count="14">
+            <span style="{{d.style}}"></span>
+          </sc-for>
+          <sc-if value="{{tip.show}}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="{{tip.style}}">
+              <span style="font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #f8dd93">{{tip.label}}</span>
+              <span style="display: flex; justify-content: space-between; gap: 16px; font-size: 12px"><span style="font-weight: 300">Headcount</span><span style="font-weight: 700">{{tip.hc}}</span></span>
+              <span style="display: flex; justify-content: space-between; gap: 16px; font-size: 12px"><span style="font-weight: 300">Expense</span><span style="font-weight: 700">{{tip.exp}}</span></span>
+              <sc-for list="{{tip.segs}}" as="t" hint-placeholder-count="0">
+                <span style="display: flex; align-items: center; gap: 6px; font-size: 11px"><span style="width: 8px; height: 8px; border-radius: 2px; background: {{t.c}}"></span><span style="font-weight: 300; flex: 1">{{t.name}}</span><span style="font-weight: 600">{{t.v}}</span></span>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+        <div style="{{xGridStyle}}">
+          <sc-for list="{{xLabels}}" as="x" hint-placeholder-count="14"><span style="display: flex; justify-content: center"><span style="{{x.style}}">{{x.text}}</span></span></sc-for>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; border-top: 1px solid #efe9dc; padding-top: 12px; font-size: 11px; color: #76634f">
+          <sc-for list="{{legend}}" as="l" hint-placeholder-count="6">
+            <span style="display: flex; align-items: center; gap: 6px"><span style="width: 10px; height: 10px; border-radius: 3px; background: {{l.c}}"></span>{{l.name}}</span>
+          </sc-for>
+          <span style="display: flex; align-items: center; gap: 6px; margin-left: auto"><span style="width: 18px; height: 2px; background: #3d3025"></span>Expense (right axis)</span>
+        </div>
+      </section>
+
+      <!-- EXPENSE BY TYPE -->
+      <section aria-label="Expense by type" style="display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px; padding: 0 4px">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: .1em">EXPENSE BY TYPE</h2>
+            <span style="font-size: 11px; font-weight: 300; color: #76634f">{{scope}}</span>
+          </div>
+          <button onClick="{{toggleAll}}" style="border: 0; cursor: pointer; padding: 8px 14px; min-height: 36px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #4d3d2e; background: #ffffff; box-shadow: inset 0 0 0 1px rgba(98,79,61,.12)">{{toggleAllLabel}}</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; align-items: start">
+          <sc-for list="{{panels}}" as="pn" hint-placeholder-count="3">
+            <div style="background: #ffffff; border-radius: 24px; padding: 6px 22px; box-shadow: inset 0 1px 0 #ffffff, inset 0 0 0 1px rgba(98,79,61,.08), 0 8px 22px -12px rgba(98,79,61,.38); display: flex; flex-direction: column">
+              <sc-for list="{{pn.groups}}" as="g" hint-placeholder-count="2">
+                <div style="{{g.wrapStyle}}">
+                  <button onClick="{{g.toggle}}" aria-expanded="{{g.open}}" style="border: 0; cursor: pointer; background: transparent; color: #4d3d2e; text-align: left; display: flex; flex-direction: column; gap: 10px; padding: 16px 0; width: 100%">
+                    <span style="display: flex; align-items: center; gap: 10px; width: 100%">
+                      <span style="{{g.badge}}">{{g.letter}}</span>
+                      <span style="flex: 1; min-width: 0; font-size: 13px; font-weight: 700; line-height: 1.3">{{g.title}}</span>
+                      <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true" style="{{g.chevStyle}}"><path d="M3 1 L7 5 L3 9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                    </span>
+                    <span style="display: flex; align-items: baseline; gap: 10px; width: 100%">
+                      <span style="font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums">{{g.amt}}</span>
+                      <span style="{{g.pctStyle}}">{{g.pct}}</span>
+                      <span style="margin-left: auto; font-size: 11px; font-weight: 600; color: #76634f">{{g.share}} of total</span>
+                    </span>
+                    <span style="display: block; width: 100%; height: 8px; border-radius: 999px; background: #f0e9d8; overflow: hidden"><span style="display: block; height: 100%; width: {{g.share}}; border-radius: 999px; background: linear-gradient(90deg,#f8dd93,#dcae48)"></span></span>
+                  </button>
+                  <sc-if value="{{g.isOpen}}" hint-placeholder-val="{{ false }}">
+                    <div style="display: flex; flex-direction: column; background: #faf8f4; border-radius: 14px; padding: 6px 14px; margin-bottom: 14px">
+                      <sc-for list="{{g.items}}" as="it" hint-placeholder-count="3">
+                        <div style="display: flex; flex-direction: column">
+                          <button onClick="{{it.toggle}}" aria-expanded="{{it.open}}" style="border: 0; cursor: pointer; background: transparent; color: #4d3d2e; text-align: left; display: flex; flex-direction: column; gap: 6px; padding: 8px 0; width: 100%; font-family: inherit">
+                            <span style="display: flex; align-items: center; gap: 10px; font-size: 13px; width: 100%">
+                              <svg width="8" height="8" viewBox="0 0 10 10" aria-hidden="true" style="{{it.chevStyle}}"><path d="M3 1 L7 5 L3 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                              <span style="flex: 1; font-weight: 300">{{it.name}}</span>
+                              <span style="font-weight: 600; font-variant-numeric: tabular-nums">{{it.amt}}</span>
+                              <span style="{{it.pctStyle}}">{{it.pct}}</span>
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 12px; width: 100%; padding-left: 18px; box-sizing: border-box">
+                              <span style="flex: 1; height: 5px; border-radius: 999px; background: #efe9dc; overflow: hidden"><span style="display: block; height: 100%; width: {{it.share}}; border-radius: 999px; background: #c4b799"></span></span>
+                              <span style="width: 92px; text-align: right; font-size: 10px; font-weight: 300; color: #76634f">{{it.share}} of total</span>
+                            </span>
+                          </button>
+                          <sc-if value="{{it.isOpen}}" hint-placeholder-val="{{ false }}">
+                            <div style="display: flex; flex-direction: column; gap: 2px; margin: 2px 0 8px 18px; padding: 6px 12px; border-radius: 12px; background: #ffffff; box-shadow: inset 0 0 0 1px #efe9dc">
+                              <sc-for list="{{it.subs}}" as="sb" hint-placeholder-count="3">
+                                <div style="display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 12px">
+                                  <span style="width: 6px; height: 6px; border-radius: 999px; background: #c4b799; flex: none"></span>
+                                  <span style="flex: 1; font-weight: 300">{{sb.name}}</span>
+                                  <span style="font-weight: 600; font-variant-numeric: tabular-nums">{{sb.amt}}</span>
+                                  <span style="width: 64px; text-align: right; font-size: 10px; font-weight: 300; color: #76634f">{{sb.share}} of {{it.code}}</span>
+                                </div>
+                              </sc-for>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+
+      <!-- TOP 5 -->
+      <section aria-label="Top players" style="background: #ffffff; border-radius: 24px; padding: 22px 26px; box-shadow: inset 0 1px 0 #ffffff, inset 0 0 0 1px rgba(98,79,61,.08), 0 8px 22px -12px rgba(98,79,61,.38); display: flex; flex-wrap: wrap; gap: 20px 40px">
+        <sc-for list="{{tops}}" as="t" hint-placeholder-count="2">
+          <div style="flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column">
+            <h2 style="margin: 0 0 10px; font-size: 16px; font-weight: 700; letter-spacing: .1em">{{t.title}} <span style="font-size: 11px; font-weight: 300; letter-spacing: 0; color: #76634f">· {{scope}}</span></h2>
+            <div style="display: grid; grid-template-columns: 24px 80px 64px minmax(0, 1fr) 100px; gap: 12px; font-size: 10px; font-weight: 700; letter-spacing: .1em; color: #76634f; padding-bottom: 8px; border-bottom: 1px solid #e6dfcf">
+              <span>#</span><span>MB#</span><span>TIER</span><span>NATIONALITY</span><span style="text-align: right">{{t.col}}</span>
+            </div>
+            <sc-for list="{{t.list}}" as="p" hint-placeholder-count="5">
+              <div style="display: grid; grid-template-columns: 24px 80px 64px minmax(0, 1fr) 100px; gap: 12px; align-items: center; font-size: 13px; padding: 9px 0; border-bottom: 1px solid #efe9dc">
+                <span style="font-weight: 700; color: #624f3d">{{p.rank}}</span>
+                <span style="font-variant-numeric: tabular-nums">{{p.mb}}</span>
+                <span style="{{p.tierStyle}}">{{p.tier}}</span>
+                <span style="font-weight: 300">{{p.nat}}</span>
+                <span style="text-align: right; font-weight: 700; font-variant-numeric: tabular-nums">{{p.amt}}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </section>
+    </sc-if>
+
+    <!-- CALENDAR (one frame) -->
+    <sc-if value="{{isCal}}" hint-placeholder-val="{{ false }}">
+      <section aria-label="Calendar" style="background: #ffffff; border-radius: 24px; padding: 22px 26px; box-shadow: inset 0 1px 0 #ffffff, inset 0 0 0 1px rgba(98,79,61,.08), 0 8px 22px -12px rgba(98,79,61,.38); display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 700; letter-spacing: .1em">{{calTitle}}</h2>
+            <span style="font-size: 11px; font-weight: 300; color: #76634f">{{calSub}}</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px">
+            <span style="display: flex; align-items: center; gap: 6px; font-size: 10px; color: #76634f">
+              <span>Low</span>
+              <sc-for list="{{shadeKey}}" as="k" hint-placeholder-count="4"><span style="width: 14px; height: 8px; border-radius: 999px; background: {{k}}"></span></sc-for>
+              <span>High</span>
+            </span>
+            <div role="group" aria-label="Shade by" style="display: flex; gap: 3px; padding: 3px; border-radius: 999px; background: #f0e9d8">
+              <sc-for list="{{calMetricBtns}}" as="b" hint-placeholder-count="2"><button aria-pressed="{{b.on}}" onClick="{{b.pick}}" style="{{b.style}}">{{b.label}}</button></sc-for>
+            </div>
+          </div>
+        </div>
+        <div role="tablist" aria-label="Month" style="display: flex; gap: 4px; overflow-x: auto; padding: 3px; border-radius: 999px; background: #faf8f4; box-shadow: inset 0 0 0 1px #efe9dc">
+          <sc-for list="{{monthTabs}}" as="m" hint-placeholder-count="12"><button role="tab" aria-selected="{{m.on}}" disabled="{{m.future}}" onClick="{{m.pick}}" style="{{m.style}}">{{m.label}}</button></sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+          <sc-for list="{{weekdays}}" as="w" hint-placeholder-count="7"><span style="font-size: 10px; font-weight: 700; letter-spacing: .1em; color: #76634f; text-align: center; padding-bottom: 2px">{{w}}</span></sc-for>
+          <sc-for list="{{cal}}" as="d" hint-placeholder-count="35">
+            <div title="{{d.tip}}" style="{{d.style}}">
+              <span style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 600"><span>{{d.n}}</span><sc-if value="{{d.today}}" hint-placeholder-val="{{ false }}"><span style="font-size: 9px; font-weight: 700; letter-spacing: .08em; padding: 2px 6px; border-radius: 999px; background: #3d3025; color: #ffffff">TODAY</span></sc-if></span>
+              <span style="{{d.mainStyle}}">{{d.main}}</span>
+              <span style="font-size: 10px; font-weight: 300">{{d.sub}}</span>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+  </main>
+</div>
+</template>
+<template id="tpl-StrategicTrack">
+
+<div style="width: 100%; min-height: 1500px; box-sizing: border-box; font-family: Montserrat, sans-serif; background: linear-gradient(180deg, #efede7 0%, #faf8f4 100%); color: #4d3d2e">
+
+<header style="background: radial-gradient(circle at 88% 0%, rgba(241,202,109,0.20) 0, rgba(241,202,109,0) 40%), linear-gradient(180deg, #624f3d 0%, #4b3b2d 60%, #3d3025 100%); padding: 22px 32px 26px; box-shadow: 0 22px 44px -26px rgba(60,40,20,.65)">
+<div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: 1px; color: #ffffff">STRATEGIC TRACK</h1>
+<span style="display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 500; color: rgba(255,255,255,.88)">Updated Nov 19, 2026&nbsp;</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px">
+<div style="display: flex; padding: 4px; border-radius: 999px; background: rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 0 0 1px rgba(255,255,255,.14)">
+<sc-for list="{{periods}}" as="p" hint-placeholder-count="3">
+<button onClick="{{p.pick}}" style="{{p.style}}">{{p.label}}</button>
+</sc-for>
+</div>
+<button role="switch" aria-checked="{{incDStr}}" onClick="{{toggleD}}" style="display: flex; align-items: center; gap: 10px; height: 42px; padding: 0 16px 0 6px; border: 0; border-radius: 999px; background: rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.45), inset 0 0 0 1px rgba(255,255,255,.14); color: #ffffff; font-family: Montserrat, sans-serif; font-size: 13px; font-weight: 600; cursor: pointer">
+<span style="{{switchTrack}}"><span style="{{switchKnob}}"></span></span>
+Include Hidden Jackpot
+</button>
+</div>
+</div>
+
+</div>
+</header>
+
+<main style="max-width: 1360px; margin: 0 auto; padding: 28px 32px 48px; display: flex; flex-direction: column; gap: 24px">
+
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+<section style="flex: 1 1 100%; min-width: 0; display: flex; flex-direction: column; gap: 14px; padding: 22px; border-radius: 22px; background: rgba(255,255,255,.75); box-shadow: inset 0 1px 0 #ffffff, inset 0 0 0 1px rgba(98,79,61,.08), 0 8px 22px -12px rgba(98,79,61,.38)">
+<div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 1.5px">BUDGET PACE MAP</h2>
+<span style="font-size: 11px; color: #76634f">Each item = 100% of its own budget</span>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: center">
+<div style="flex: 0 1 580px; max-width: 100%; overflow-x: auto; overflow-y: visible">
+<div onMouseLeave="{{clearHov}}" style="position: relative; width: 580px; height: 540px; margin: 0 auto">
+<svg width="580" height="540" viewBox="0 0 580 540" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+<path d="{{arcA}}" fill="none" stroke="#624f3d" stroke-width="5" stroke-linecap="round" stroke-opacity="{{arcOpA}}"></path>
+<path d="{{arcB}}" fill="none" stroke="#9c8570" stroke-width="5" stroke-linecap="round" stroke-opacity="{{arcOpB}}"></path>
+<path d="{{arcC}}" fill="none" stroke="#c4b799" stroke-width="5" stroke-linecap="round" stroke-opacity="{{arcOpC}}"></path>
+<path d="{{arcD}}" fill="none" stroke="#dcae48" stroke-width="5" stroke-linecap="round" stroke-opacity="{{arcOpD}}"></path>
+<polygon points="{{grid100}}" fill="#faf8f4" stroke="#e6dfcf"></polygon>
+<polygon points="{{grid50}}" fill="none" stroke="#efe9dd"></polygon>
+<path d="{{axesPath}}" stroke="#f0eadf"></path>
+<line x1="290" y1="270" x2="{{hovX}}" y2="{{hovY}}" stroke="#4d3d2e" stroke-width="1.2" stroke-opacity="{{hovLineOp}}"></line>
+<polygon points="{{planPts}}" fill="none" stroke="#624f3d" stroke-width="1.5" stroke-dasharray="5 5" stroke-opacity="0.7"></polygon>
+<polygon points="{{actPts}}" fill="rgba(220,174,72,0.20)" stroke="#a8791f" stroke-width="2.2"></polygon>
+</svg>
+<sc-for list="{{arcBadges}}" as="b" hint-placeholder-count="3">
+<button aria-label="{{b.aria}}" onMouseEnter="{{b.hover}}" onFocus="{{b.hover}}" onBlur="{{clearHov}}" onClick="{{b.open}}" style="{{b.style}}">{{b.letter}}</button>
+</sc-for>
+<sc-for list="{{dots}}" as="d" hint-placeholder-count="9">
+<button aria-label="{{d.aria}}" onMouseEnter="{{d.hover}}" onFocus="{{d.hover}}" onBlur="{{clearHov}}" onClick="{{d.open}}" style="{{d.style}}"></button>
+</sc-for>
+<sc-for list="{{labels}}" as="l" hint-placeholder-count="9">
+<button onMouseEnter="{{l.hover}}" onFocus="{{l.hover}}" onBlur="{{clearHov}}" onClick="{{l.open}}" style="{{l.style}}">{{l.text}}</button>
+</sc-for>
+<sc-if value="{{tip.show}}" hint-placeholder-val="{{ false }}">
+<div role="tooltip" style="{{tip.style}}">
+<span style="font-size: 10px; font-weight: 600; letter-spacing: .6px; color: rgba(255,255,255,.72); white-space: nowrap">{{tip.kicker}}</span>
+<span style="font-size: 13px; font-weight: 700; color: #ffffff; white-space: nowrap">{{tip.title}}</span>
+<span style="display: flex; align-items: center; gap: 8px; white-space: nowrap; font-size: 12px; color: rgba(255,255,255,.88)"><span>Used <b style="color: #f8dd93">{{tip.act}}</b> · plan {{tip.plan}}</span><span style="{{tip.chip}}">{{tip.status}}</span></span>
+<sc-if value="{{tip.priority}}" hint-placeholder-val="{{ false }}"><span style="display: inline-flex; align-items: center; gap: 4px; align-self: flex-start; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: #dcae48; color: #3d3025; white-space: nowrap">★ Strategic Priority</span></sc-if>
+</div>
+</sc-if>
+</div>
+</div>
+
+<div style="flex: 1 1 560px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; padding-left: 24px; border-left: 1px solid #e6dfcf; overflow-x: auto">
+<span style="align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #76634f">SHARE OF ACTUAL SPEND</span>
+<div style="position: relative; width: 560px; height: 320px; flex: none">
+<svg width="560" height="320" viewBox="0 0 560 320" aria-hidden="true" style="position: absolute; left: 0; top: 0">
+<path d="{{ring0.lead}}" fill="none" stroke="#c4b799" stroke-width="1.25"></path>
+<path d="{{ring1.lead}}" fill="none" stroke="#c4b799" stroke-width="1.25"></path>
+<path d="{{ring2.lead}}" fill="none" stroke="#c4b799" stroke-width="1.25"></path>
+<path d="{{ring3.lead}}" fill="none" stroke="#c4b799" stroke-width="1.25"></path>
+</svg>
+<svg width="240" height="240" viewBox="0 0 140 140" role="img" aria-label="{{mixAria}}" style="position: absolute; left: 160px; top: 40px">
+<circle cx="70" cy="70" r="52" fill="none" stroke="#f0e9d8" stroke-width="18"></circle>
+<circle cx="70" cy="70" r="52" fill="none" stroke="{{ring0.color}}" stroke-width="{{ring0.w}}" stroke-dasharray="{{ring0.dash}}" stroke-dashoffset="{{ring0.off}}" transform="rotate(-90 70 70)" onMouseEnter="{{ring0.hover}}" onMouseLeave="{{clearHov}}" style="cursor: pointer; transition: stroke-width .15s"></circle>
+<circle cx="70" cy="70" r="52" fill="none" stroke="{{ring1.color}}" stroke-width="{{ring1.w}}" stroke-dasharray="{{ring1.dash}}" stroke-dashoffset="{{ring1.off}}" transform="rotate(-90 70 70)" onMouseEnter="{{ring1.hover}}" onMouseLeave="{{clearHov}}" style="cursor: pointer; transition: stroke-width .15s"></circle>
+<circle cx="70" cy="70" r="52" fill="none" stroke="{{ring2.color}}" stroke-width="{{ring2.w}}" stroke-dasharray="{{ring2.dash}}" stroke-dashoffset="{{ring2.off}}" transform="rotate(-90 70 70)" onMouseEnter="{{ring2.hover}}" onMouseLeave="{{clearHov}}" style="cursor: pointer; transition: stroke-width .15s"></circle>
+<circle cx="70" cy="70" r="52" fill="none" stroke="{{ring3.color}}" stroke-width="{{ring3.w}}" stroke-dasharray="{{ring3.dash}}" stroke-dashoffset="{{ring3.off}}" transform="rotate(-90 70 70)" onMouseEnter="{{ring3.hover}}" onMouseLeave="{{clearHov}}" style="cursor: pointer; transition: stroke-width .15s"></circle>
+</svg>
+<div style="position: absolute; left: 160px; top: 40px; width: 240px; height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none">
+<span style="font-size: 24px; font-weight: 700; color: #4d3d2e">{{spendTotal}}</span>
+<span style="font-size: 11px; font-weight: 600; color: #76634f">actual spend</span>
+</div>
+<sc-for list="{{ring}}" as="s" hint-placeholder-count="3">
+<div onMouseEnter="{{s.hover}}" onMouseLeave="{{clearHov}}" style="{{s.labelStyle}}">
+<span style="{{s.headStyle}}"><span style="{{s.badge}}">{{s.letter}}</span><span style="font-size: 24px; font-weight: 700; color: #4d3d2e; line-height: 1">{{s.pct}}</span></span>
+<span style="font-size: 11px; font-weight: 600; color: #76634f; line-height: 1.3">{{s.short}}</span>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 8px 18px; padding-top: 12px; border-top: 1px solid #e6dfcf; font-size: 11px; font-weight: 500; color: #76634f">
+<span style="display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="20" height="4" aria-hidden="true"><path d="M0 2H20" stroke="#624f3d" stroke-width="1.5" stroke-dasharray="5 3"></path></svg>Plan to date</span>
+<span style="display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="20" height="4" aria-hidden="true"><path d="M0 2H20" stroke="#a8791f" stroke-width="3"></path></svg>Actual</span>
+<span style="display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="#dcae48"></circle></svg>On track</span>
+<span style="display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="#b0151c"></circle></svg>▲ Over plan</span>
+<span style="display: flex; align-items: center; gap: 6px; white-space: nowrap"><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="4" fill="#ffffff" stroke="#c98a12" stroke-width="2.5"></circle></svg>▼ Under pace</span>
+<span style="display: flex; align-items: center; gap: 6px; white-space: nowrap"><span style="display: inline-block; padding: 1px 6px; border-radius: 999px; background: #dcae48; color: #3d3025; font-size: 10px; font-weight: 700">★ A1</span>Strategic Priority</span>
+<span style="display: flex; align-items: center; gap: 6px; white-space: nowrap"><span style="display: inline-block; padding: 1px 6px; border-radius: 999px; background: #b0151c; color: #ffffff; font-size: 10px; font-weight: 700">⚠ B2</span>Priority at risk</span>
+</div>
+</section>
+
+<section style="flex: 1 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; padding: 0 4px">
+<div style="display: flex; flex-direction: column; gap: 3px">
+<h2 style="margin: 0; font-size: 14px; font-weight: 700; letter-spacing: 1.5px">DETAIL BY GROUP</h2>
+
+</div>
+<button onClick="{{toggleAllGroups}}" style="border: 0; cursor: pointer; padding: 8px 14px; min-height: 36px; border-radius: 999px; font-family: Montserrat, sans-serif; font-size: 12px; font-weight: 600; color: #4d3d2e; background: #ffffff; box-shadow: inset 0 0 0 1px rgba(98,79,61,.12)">{{toggleAllLabel}}</button>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="3">
+<div onMouseEnter="{{g.hover}}" onMouseLeave="{{clearHov}}" style="{{g.wrapStyle}}">
+<button aria-expanded="{{g.expandedStr}}" onClick="{{g.toggle}}" style="display: flex; flex-direction: column; gap: 10px; width: 100%; padding: 18px 20px; border: 0; background: transparent; text-align: left; cursor: pointer; font-family: Montserrat, sans-serif; color: #4d3d2e">
+<span style="display: flex; align-items: center; gap: 10px; width: 100%">
+<span style="{{g.badge}}">{{g.letter}}</span>
+<span style="flex: 1; min-width: 0; font-size: 13px; font-weight: 700; line-height: 1.3">{{g.title}}</span>
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#76634f" stroke-width="2" stroke-linecap="round" aria-hidden="true" style="{{g.chevron}}"><path d="M6 9l6 6 6-6"></path></svg>
+</span>
+<span style="display: flex; align-items: baseline; gap: 10px; width: 100%">
+<span style="font-size: 26px; font-weight: 700">{{g.used}}</span>
+<span style="font-size: 11px; color: #76634f; white-space: nowrap">used</span>
+<span style="margin-left: auto"><span style="{{g.statusChip}}">{{g.statusLabel}}</span></span>
+</span>
+<span style="position: relative; display: block; width: 100%; height: 8px; margin-bottom: 12px; border-radius: 999px; background: #f0e9d8">
+<span style="{{g.barStyle}}"></span>
+<span style="{{g.markStyle}}"></span>
+<span style="{{g.markLabel}}">plan {{g.plan}}</span>
+</span>
+<span style="display: flex; flex-wrap: wrap; gap: 6px">
+<sc-for list="{{g.chips}}" as="c" hint-placeholder-count="2"><span style="{{c.style}}">{{c.label}}</span></sc-for>
+</span>
+</button>
+
+<sc-if value="{{g.expanded}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; margin: 0 14px 14px; padding: 2px 12px; border-radius: 14px; background: #faf8f4">
+<sc-for list="{{g.rows}}" as="r" hint-placeholder-count="3">
+<div onMouseEnter="{{r.hover}}" onMouseLeave="{{g.hover}}" style="{{r.rowStyle}}">
+<button aria-expanded="{{r.openStr}}" onClick="{{r.toggle}}" style="display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 10px 0; border: 0; background: transparent; text-align: left; cursor: pointer; font-family: Montserrat, sans-serif; color: #4d3d2e">
+<span style="display: flex; align-items: center; gap: 8px; width: 100%; font-size: 13px">
+<svg width="8" height="8" viewBox="0 0 10 10" aria-hidden="true" style="{{r.chevStyle}}"><path d="M3 1 L7 5 L3 9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span style="{{r.codeStyle}}">{{r.code}}</span>
+<span style="flex: 1; min-width: 0; font-weight: 500; line-height: 1.3">{{r.name}}</span>
+<span style="font-size: 14px; font-weight: 700">{{r.act}}</span>
+</span>
+<span style="display: flex; align-items: center; gap: 10px; width: 100%; padding-left: 16px; padding-bottom: 10px; box-sizing: border-box">
+<span style="position: relative; display: block; flex: 1; height: 6px; border-radius: 999px; background: #efe9dc"><span style="{{r.barStyle}}"></span><span style="{{r.markStyle}}"></span><span style="{{r.markLabel}}">plan {{r.plan}}</span></span>
+<span style="{{r.chipStyle}}">{{r.status}}</span>
+</span>
+</button>
+<sc-if value="{{r.isOpen}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; flex-direction: column; gap: 10px; margin: 0 0 12px 16px">
+<sc-if value="{{r.atRisk}}" hint-placeholder-val="{{ false }}"><span style="align-self: flex-start; font-size: 10px; font-weight: 700; letter-spacing: .5px; padding: 3px 8px; border-radius: 999px; background: #b0151c; color: #ffffff; white-space: nowrap">⚠ PRIORITY AT RISK</span></sc-if>
+<div style="display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 12px; background: #ffffff; box-shadow: inset 0 0 0 1px #efe9dc">
+<span style="font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #76634f; padding-bottom: 2px">SPEND BY PROGRAM</span>
+<sc-for list="{{r.legend}}" as="lg" hint-placeholder-count="3">
+<div style="display: flex; flex-direction: column; gap: 3px; padding: 3px 0">
+<span style="display: flex; align-items: center; gap: 8px; font-size: 12px"><span style="flex: 1; min-width: 0; font-weight: 300">{{lg.name}}</span><span style="font-weight: 700">{{lg.pct}}</span></span>
+<span style="display: block; height: 4px; border-radius: 999px; background: #f0e9d8; overflow: hidden"><span style="display: block; height: 100%; width: {{lg.w}}; border-radius: 999px; background: #c4b799"></span></span>
+</div>
+</sc-for>
+</div>
+<div title="{{r.objFormula}}" style="display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 12px; background: #fffaf0; box-shadow: inset 0 0 0 1px #ecd9a8">
+<span style="display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0">
+<span style="font-size: 9px; font-weight: 700; letter-spacing: 1px; color: #624f3d">OBJECTIVE KPI</span>
+<span style="font-size: 12px; font-weight: 700; line-height: 16px; color: #4d3d2e">{{r.objName}}</span>
+<span style="font-size: 10px; line-height: 13px; color: #76634f">{{r.objFormula}}</span>
+</span>
+<span style="display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0">
+<span style="font-size: 22px; line-height: 1; font-weight: 700; color: #4d3d2e">{{r.kpiVal}}</span>
+<span style="font-size: 10px; color: #76634f; white-space: nowrap">target {{r.kpiTarget}}</span>
+<span style="{{r.kpiStyle}}">{{r.kpiNote}}</span>
+</span>
+</div>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</sc-if>
+</div>
+</sc-for>
+</div>
+</section>
+</div>
+
+</main>
+</div>
+</template>
+<script>
+
+// Minimal runtime for the exported Design Components:
+// renders <template> markup with {{holes}}, <sc-for>, <sc-if>, <dc-import> and on* handlers.
+let queued = false;
+function scheduleRender() { if (queued) return; queued = true; requestAnimationFrame(() => { queued = false; renderApp(); }); }
+class DCLogic {
+  constructor(props) { this.props = props || {}; this.state = {}; }
+  setState(u) {
+    const next = typeof u === 'function' ? u(this.state, this.props) : u;
+    let changed = false;
+    for (const k in next) { if (this.state[k] !== next[k]) { changed = true; break; } }
+    if (!changed) return;
+    Object.assign(this.state, next); scheduleRender();
+  }
+  forceUpdate() { scheduleRender(); }
+}
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const HOLE = /\{\{\s*([^}]+?)\s*\}\}/g;
+const WHOLE = /^\s*\{\{\s*([^}]+?)\s*\}\}\s*$/;
+const EVENTS = { onclick: 'click', onchange: 'change', oninput: 'input', onmouseenter: 'mouseenter', onmouseleave: 'mouseleave', onfocus: 'focus', onblur: 'blur' };
+const instances = {};
+function lookup(path, scope) {
+  if (path === 'true') return true; if (path === 'false') return false;
+  if (/^-?\d+(\.\d+)?$/.test(path)) return Number(path);
+  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), scope);
+}
+function interp(text, scope) { return text.replace(HOLE, (_, p) => { const v = lookup(p, scope); return v == null ? '' : String(v); }); }
+function renderNodes(nodes, scope, parent, inSvg) { nodes.forEach(n => renderNode(n, scope, parent, inSvg)); }
+function renderComponent(name, parent) {
+  const C = COMPONENTS[name];
+  if (!instances[name]) instances[name] = new C({});
+  renderNodes(Array.from(document.getElementById('tpl-' + name).content.childNodes), instances[name].renderVals(), parent, false);
+}
+function renderNode(n, scope, parent, inSvg) {
+  if (n.nodeType === 3) { parent.appendChild(document.createTextNode(interp(n.nodeValue, scope))); return; }
+  if (n.nodeType !== 1) return;
+  const tag = n.localName;
+  if (tag === 'sc-for') {
+    const list = lookup(n.getAttribute('list').replace(/[{}\s]/g, ''), scope) || [];
+    const as = n.getAttribute('as');
+    list.forEach((item, i) => renderNodes(Array.from(n.childNodes), Object.assign({}, scope, { [as]: item, $index: i }), parent, inSvg));
+    return;
+  }
+  if (tag === 'sc-if') {
+    if (lookup(n.getAttribute('value').replace(/[{}\s]/g, ''), scope)) renderNodes(Array.from(n.childNodes), scope, parent, inSvg);
+    return;
+  }
+  if (tag === 'dc-import') { const box = document.createElement('div'); renderComponent(n.getAttribute('name'), box); parent.appendChild(box); return; }
+  const svg = inSvg || tag === 'svg';
+  const el = svg ? document.createElementNS(SVG_NS, tag) : document.createElement(tag);
+  for (const a of Array.from(n.attributes)) {
+    const name = a.name, raw = a.value, w = raw.match(WHOLE);
+    if (name.startsWith('hint-')) continue;
+    if (EVENTS[name.toLowerCase()]) { const fn = w && lookup(w[1], scope); if (typeof fn === 'function') el.addEventListener(EVENTS[name.toLowerCase()], fn); continue; }
+    const val = w ? lookup(w[1], scope) : interp(raw, scope);
+    if (val === false || val == null || (name === 'disabled' && val === 'false')) continue;
+    el.setAttribute(name, val === true ? '' : String(val));
+  }
+  renderNodes(Array.from(n.childNodes), scope, el, svg && tag !== 'foreignObject');
+  parent.appendChild(el);
+}
+function renderApp() {
+  const root = document.getElementById('app'), y = window.scrollY;
+  const frag = document.createDocumentFragment();
+  renderComponent('Main', frag);
+  root.replaceChildren(frag);
+  window.scrollTo(0, y);
+}
+
+const COMPONENTS = {};
+COMPONENTS.Main = (function () {
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { tab: 'Day', split: 'total', open: {}, openItem: {}, hover: -1, calMonth: 10, calMetric: 'hc' };
+  }
+
+  rng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  data() {
+    if (this._d) return this._d;
+    const r = this.rng(20261118);
+    const TIERS = [
+      { k: 'P', s: .30, ph: 15, c: '#ab9e81' }, { k: 'I', s: .22, ph: 30, c: '#929395' },
+      { k: 'I+', s: .14, ph: 50, c: '#666667' }, { k: 'V', s: .12, ph: 90, c: '#ecc36a' },
+      { k: 'V+', s: .09, ph: 150, c: '#e59f38' }, { k: 'ONE', s: .07, ph: 300, c: '#c62127' },
+      { k: 'ONE+', s: .04, ph: 600, c: '#601a19' }, { k: 'EC', s: .02, ph: 1200, c: '#1fadac' }
+    ];
+    const NATS = [
+      { k: 'Chinese', s: .34, m: 1.25, c: '#9c8570' }, { k: 'Korean', s: .28, m: 1.1, c: '#dcae48' },
+      { k: 'O.Vietnamese', s: .12, m: .8, c: '#1fadac' }, { k: 'Malaysian', s: .08, m: .9, c: '#8d8f92' },
+      { k: 'Singaporean', s: .06, m: 1.0, c: '#c62127' }, { k: 'Others', s: .12, m: .7, c: '#ddd6cb' }
+    ];
+    const ITEMS = [
+      { g: 'A', name: 'A1. Customer Retention', s: .14, cash: .45, subs: ['Rebate on Loss'] },
+      { g: 'A', name: 'A2. Membership & Loyalty', s: .18, cash: .30, subs: ['Benefit', 'Birthday', 'Premium CP', 'Host MBship Program'] },
+      { g: 'A', name: 'A3. Special Care', s: .08, cash: .55, subs: ['Additional WDC', 'Double RL WDC'] },
+      { g: 'A', name: 'A4. Birthday & Anniversary', s: .04, cash: .40, subs: ['Signature gift', 'Host gift'] },
+      { g: 'B', name: 'B1. Customer Acquisition', s: .09, cash: .20, subs: ['Elite Coupon', 'New MB Welcome VC'] },
+      { g: 'B', name: 'B2. Reactivation', s: .06, cash: .25, subs: ['Dormant VC', 'Welcome back VC', 'Welcome Promotion VC'] },
+      { g: 'C', name: 'C1. Experience-driven', s: .10, cash: .35, subs: ['Tournament', 'Golden Week', 'One Shot', 'Race to 8'] },
+      { g: 'C', name: 'C2. Travel & Accessibility', s: .07, cash: .80, subs: ['Transportation', 'Airport', 'Hotel'] },
+      { g: 'C', name: 'C3. Seasonal & Tactical', s: .08, cash: .30, subs: ['Daily Lucky Draw', 'VG Membership Day', 'Point Pyramid', 'PP Consolation', 'VIP Cash', 'Super Thursday', 'Slot FGCP', 'Table', 'QR Bonus', 'Coupon Day', 'Door Gift', 'Customer Care VC'] }
+    ];
+    const N = 322, start = Date.UTC(2026, 0, 1), days = [];
+    const wf = [1.18, .88, .90, .95, 1.0, 1.15, 1.25];
+    const norm = (arr, total) => { const s = arr.reduce((a, b) => a + b, 0); return arr.map(v => v / s * total); };
+    for (let i = 0; i < N; i++) {
+      const dt = new Date(start + i * 864e5);
+      const season = 1 + .08 * Math.sin(i / 58) + (i > 300 ? .05 : 0);
+      const hc = Math.round(1180 * wf[dt.getUTCDay()] * season * (.94 + r() * .12));
+      const tHc = norm(TIERS.map(t => t.s * (.9 + r() * .2)), hc);
+      const tExp = TIERS.map((t, j) => tHc[j] * t.ph * (.85 + r() * .3));
+      // v2: Hidden Jackpot (~16% of promo cost in v1) is not counted
+      const exp = tExp.reduce((a, b) => a + b, 0) * 0.84;
+      const nHc = norm(NATS.map(n => n.s * (.9 + r() * .2)), hc);
+      const it = norm(ITEMS.map(x => x.s * (.8 + r() * .4)), exp);
+      const cash = it.reduce((a, v, j) => a + v * ITEMS[j].cash, 0);
+      days.push({ dt, hc, exp, tHc, nHc, it, cash });
+    }
+    this._d = { TIERS, NATS, ITEMS, days, L: N - 1 };
+    return this._d;
+  }
+
+  money(v) {
+    const a = Math.abs(v);
+    if (a >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+    if (a >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'K';
+    return '$' + Math.round(v);
+  }
+  num(v) { return Math.round(v).toLocaleString('en-US'); }
+  pct(a, b) { return b ? (a - b) / b * 100 : 0; }
+  pctText(p) { return (p >= 0 ? '▲ +' : '▼ ') + p.toFixed(1) + '%'; }
+  pctStyle(p, extra) {
+    return 'font-weight: 700; color: ' + (p >= 0 ? '#2f6b3a' : '#b0151c') + '; font-variant-numeric: tabular-nums;' + (extra || '');
+  }
+  sum(days, a, b, f) { let s = 0; for (let i = a; i <= b; i++) s += f(days[i]); return s; }
+  nice(mx) {
+    const p10 = Math.pow(10, Math.floor(Math.log10(Math.max(mx, 1))));
+    return [1, 1.5, 2, 2.5, 3, 4, 5, 6, 8, 10].map(m => m * p10).find(v => v >= mx) || mx;
+  }
+
+  windowFor(tab, L) {
+    if (tab === 'Day') return { a: L, b: L, pa: L - 1, pb: L - 1, scope: 'Nov 18', cmp: 'vs yesterday' };
+    if (tab === 'Week') return { a: L - 2, b: L, pa: L - 9, pb: L - 7, scope: 'WTD · Nov 16 – 18', cmp: 'vs last week' };
+    if (tab === 'Month') return { a: 304, b: L, pa: 273, pb: 290, scope: 'MTD · Nov 1 – 18', cmp: 'vs last month' };
+    return { a: L, b: L, pa: L - 1, pb: L - 1, scope: 'Nov 18', cmp: 'vs yesterday' };
+  }
+
+  renderVals() {
+    const D = this.data(), days = D.days, L = D.L;
+    const st = this.state, tab = st.tab;
+    const W = this.windowFor(tab, L);
+    const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const wdn = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    const tabs = ['Day', 'Week', 'Month', 'Calendar', 'Strategic Track'].map(t => ({
+      label: t, on: t === tab ? 'true' : 'false',
+      pick: () => this.setState({ tab: t }),
+      style: 'border: 0; cursor: pointer; padding: 10px 20px; min-height: 40px; border-radius: 999px; font-size: 13px; font-weight: 600; letter-spacing: .04em; ' +
+        (t === tab ? 'background: #ffffff; color: #4d3d2e; box-shadow: inset 0 1px 0 #ffffff, 0 2px 10px rgba(40,25,10,.2);' : 'background: transparent; color: rgba(255,255,255,.88);')
+    }));
+
+    // summary: one comparison per tab
+    const hcP = this.sum(days, W.a, W.b, d => d.hc), hcPr = this.sum(days, W.pa, W.pb, d => d.hc);
+    const exP = this.sum(days, W.a, W.b, d => d.exp), exPr = this.sum(days, W.pa, W.pb, d => d.exp);
+    const ph = this.pct(hcP, hcPr), pe = this.pct(exP, exPr);
+    const sum = {
+      hc: this.num(hcP), exp: this.money(exP),
+      hcPct: this.pctText(ph) + ' ' + W.cmp, expPct: this.pctText(pe) + ' ' + W.cmp,
+      hcStyle: this.pctStyle(ph, ' font-size: 13px;'), expStyle: this.pctStyle(pe, ' font-size: 13px;')
+    };
+    const cash = this.sum(days, W.a, W.b, d => d.cash), play = exP - cash, cp = cash / exP * 100;
+    const donut = {
+      bg: 'conic-gradient(#624f3d 0 ' + cp.toFixed(1) + '%, #dcae48 ' + cp.toFixed(1) + '% 100%)',
+      cashW: cp.toFixed(1) + '%',
+      aria: 'Cashable ' + cp.toFixed(0) + '%, playable ' + (100 - cp).toFixed(0) + '%',
+      parts: [
+        { label: 'Cashable', pct: cp.toFixed(1) + '%', amt: this.money(cash), color: '#624f3d' },
+        { label: 'Playable', pct: (100 - cp).toFixed(1) + '%', amt: this.money(play), color: '#dcae48' }
+      ]
+    };
+
+    // combo chart: stacked headcount bars + expense line
+    let buckets = [];
+    if (tab === 'Day') {
+      for (let i = L - 13; i <= L; i++) buckets.push({ a: i, b: i, label: days[i].dt.getUTCDate() + ' ' + mon[days[i].dt.getUTCMonth()] });
+    } else if (tab === 'Week') {
+      for (let w = 11; w >= 0; w--) { const a = L - 2 - w * 7; buckets.push({ a, b: Math.min(a + 6, L), label: 'W' + (47 - w) }); }
+    } else {
+      let a = 0;
+      for (let m = 0; m < 11; m++) { const len = new Date(Date.UTC(2026, m + 1, 0)).getUTCDate(); buckets.push({ a, b: Math.min(a + len - 1, L), label: mon[m] }); a += len; }
+    }
+    const avg = false;
+    const split = st.split;
+    const keys = split === 'tier' ? D.TIERS : split === 'nat' ? D.NATS : [{ k: 'Headcount', c: '#d6ccb4' }];
+    const segVal = (d, j) => split === 'tier' ? d.tHc[j] : split === 'nat' ? d.nHc[j] : d.hc;
+    const bk = buckets.map(b => {
+      const len = b.b - b.a + 1, f = avg ? 1 / len : 1;
+      return {
+        label: b.label,
+        hc: this.sum(days, b.a, b.b, d => d.hc) * f,
+        exp: this.sum(days, b.a, b.b, d => d.exp) * f,
+        segs: keys.map((k, j) => this.sum(days, b.a, b.b, d => segVal(d, j)) * f)
+      };
+    });
+    const H = 260, n = bk.length;
+    const hcMax = this.nice(Math.max(...bk.map(b => b.hc)) * 1.05);
+    const exMax = this.nice(Math.max(...bk.map(b => b.exp)) * 1.05);
+    const cur = n - 1, hov = st.hover;
+    const curName = { Day: 'TODAY', Week: 'THIS WEEK', Month: 'THIS MONTH' }[tab] || '';
+    const bars = bk.map((b, i) => {
+      const isCur = i === cur, dim = hov >= 0 && hov !== i;
+      const totalColor = isCur ? 'linear-gradient(180deg,#e8c97a,#a8791f)' : '#d6ccb4';
+      return {
+        enter: () => this.setState({ hover: i }),
+        colStyle: 'height: 100%; display: flex; align-items: flex-end; justify-content: center; cursor: default; border-radius: 10px; ' + (hov === i ? 'background: rgba(196,183,153,.18);' : (isCur ? 'background: rgba(241,202,109,.10);' : '')),
+        barStyle: 'width: 56%; max-width: 44px; height: ' + (b.hc / hcMax * 100).toFixed(2) + '%; display: flex; flex-direction: column-reverse; border-radius: 8px 8px 0 0; overflow: hidden; transition: opacity .15s; opacity: ' + (dim ? .45 : 1) + ';' + (isCur && split !== 'total' ? ' box-shadow: 0 0 0 2px #3d3025;' : ''),
+        segs: b.segs.map((v, j) => ({ h: (v / b.hc * 100).toFixed(2) + '%', c: split === 'total' ? totalColor : keys[j].c }))
+      };
+    });
+    const hb = hov >= 0 ? bk[hov] : null;
+    const tip = hb ? {
+      show: true,
+      label: (hov === cur ? curName + ' · ' : '') + hb.label + (tab === 'Day' ? '' : ' (total)'),
+      hc: this.num(hb.hc), exp: this.money(hb.exp),
+      segs: split === 'total' ? [] : keys.map((k, j) => ({ name: k.k, c: k.c, v: this.num(hb.segs[j]) })),
+      style: 'position: absolute; top: 0; z-index: 5; min-width: 170px; display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 14px; background: rgba(61,48,37,.94); color: #ffffff; pointer-events: none; box-shadow: 0 10px 24px -10px rgba(20,10,0,.5); ' +
+        ((hov + .5) / n > .7 ? 'right: ' + ((1 - (hov + .5) / n) * 100 + 100 / n * .5).toFixed(2) + '%;' : 'left: ' + (((hov + .5) / n) * 100 + 100 / n * .5).toFixed(2) + '%;')
+    } : { show: false, segs: [] };
+    const xy = bk.map((b, i) => ({ x: (i + .5) / n, y: H - b.exp / exMax * H }));
+    const lineD = xy.map((p, i) => (i ? 'L' : 'M') + (p.x * 1000).toFixed(1) + ' ' + p.y.toFixed(1)).join(' ');
+    const dots = xy.map((p, i) => ({ style: 'position: absolute; left: ' + (p.x * 100).toFixed(2) + '%; top: ' + p.y.toFixed(1) + 'px; pointer-events: none; border-radius: 999px; border: 2px solid #3d3025; ' +
+      (i === cur || i === hov ? 'width: 12px; height: 12px; margin: -7px 0 0 -7px; background: #3d3025;' : 'width: 8px; height: 8px; margin: -5px 0 0 -5px; background: #ffffff;') }));
+    const grid = [0, .25, .5, .75, 1].map(f => ({
+      top: (H - f * H) + 'px', labelTop: (H - f * H - 7) + 'px',
+      left: this.num(hcMax * f), right: this.money(exMax * f)
+    }));
+    const cols = 'repeat(' + n + ', minmax(0, 1fr))';
+    const seg = (cur, val, label) => ({
+      label, on: cur === val ? 'true' : 'false', pick: () => this.setState({ split: val }),
+      style: 'border: 0; cursor: pointer; padding: 8px 16px; min-height: 36px; border-radius: 999px; font-size: 12px; font-weight: 600; color: #4d3d2e; ' +
+        (cur === val ? 'background: #ffffff; box-shadow: inset 0 1px 0 #ffffff, 0 2px 10px rgba(40,25,10,.2);' : 'background: transparent;')
+    });
+    const splitBtns = [seg(split, 'total', 'Total'), seg(split, 'tier', 'By tier'), seg(split, 'nat', 'By nationality')];
+    const chartSub = { Day: 'Daily · last 14 days', Week: 'Weekly total · this week = WTD', Month: 'Monthly total · Nov = MTD' }[tab] || '';
+
+    // calendar
+    const cm = st.calMonth, isHcM = st.calMetric === 'hc';
+    let mStart = 0; for (let m = 0; m < cm; m++) mStart += new Date(Date.UTC(2026, m + 1, 0)).getUTCDate();
+    const mLen = new Date(Date.UTC(2026, cm + 1, 0)).getUTCDate();
+    const lead = new Date(Date.UTC(2026, cm, 1)).getUTCDay();
+    const vals = []; for (let i = mStart; i < mStart + mLen && i <= L; i++) vals.push(isHcM ? days[i].hc : days[i].exp);
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    const shades = ['#f7f0d5', '#efdfae', '#e8c97a', '#dcae48'];
+    const cal = [];
+    for (let i = 0; i < lead; i++) cal.push({ n: '', main: '', sub: '', tip: '', today: false, mainStyle: '', style: 'min-height: 70px;' });
+    let mHc = 0, mEx = 0;
+    for (let dn = 1; dn <= mLen; dn++) {
+      const idx = mStart + dn - 1, fut = idx > L, isToday = idx === L;
+      const dd = fut ? null : days[idx];
+      if (dd) { mHc += dd.hc; mEx += dd.exp; }
+      const v = dd ? (isHcM ? dd.hc : dd.exp) : 0;
+      const lvl = fut ? 0 : Math.min(3, Math.floor((v - lo) / (hi - lo + 1e-9) * 4));
+      cal.push({
+        n: dn, today: isToday,
+        main: fut ? '' : (isHcM ? this.num(dd.hc) : this.money(dd.exp)),
+        sub: fut ? '' : (isHcM ? this.money(dd.exp) : this.num(dd.hc) + ' pax'),
+        tip: fut ? '' : mon[cm] + ' ' + dn + ' · ' + this.num(dd.hc) + ' pax · ' + this.money(dd.exp),
+        mainStyle: 'font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums;',
+        style: 'min-height: 70px; border-radius: 14px; padding: 7px 10px; display: flex; flex-direction: column; gap: 1px; color: #4d3d2e; box-sizing: border-box; ' +
+          (fut ? 'background: #faf8f4; color: #76634f;' : 'background: ' + shades[lvl] + ';') + (isToday ? ' box-shadow: inset 0 0 0 2px #3d3025;' : '')
+      });
+    }
+    const pillS = (on, extra) => 'border: 0; padding: 8px 16px; min-height: 36px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; ' + (extra || '') +
+      (on ? 'cursor: pointer; color: #4d3d2e; background: #ffffff; box-shadow: inset 0 1px 0 #ffffff, 0 2px 10px rgba(40,25,10,.2);' : 'cursor: pointer; color: #4d3d2e; background: transparent;');
+    const calMetricBtns = [['hc', 'By headcount'], ['exp', 'By expense']].map(x => ({ label: x[1], on: st.calMetric === x[0] ? 'true' : 'false', pick: () => this.setState({ calMetric: x[0] }), style: pillS(st.calMetric === x[0]) }));
+    const monthTabs = mon.map((m, i) => {
+      const fut = i > 10;
+      return { label: m, on: i === cm ? 'true' : 'false', future: fut, pick: () => { if (!fut) this.setState({ calMonth: i }); },
+        style: fut ? 'border: 0; padding: 8px 14px; min-height: 36px; border-radius: 999px; font-size: 12px; font-weight: 600; background: transparent; color: #76634f; opacity: .5; cursor: default; flex: 1;' : pillS(i === cm, 'flex: 1; ') };
+    });
+    const calTitle = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'][cm] + ' 2026';
+    const calSub = (cm === 10 ? 'MTD · ' : 'Month total · ') + this.num(mHc) + ' headcount · ' + this.money(mEx) + ' expense';
+
+    // expense by type: period amount + % change only
+    const gdefs = [
+      { g: 'A', name: 'A. Customer Relationship & Loyalty' },
+      { g: 'B', name: 'B. Customer Acquisition & Development' },
+      { g: 'C', name: 'C. Customer Experience & Engagement' }
+    ];
+    const iv = D.ITEMS.map((it, j) => ({ it, amt: this.sum(days, W.a, W.b, d => d.it[j]), pr: this.sum(days, W.pa, W.pb, d => d.it[j]) }));
+    const gsum = gdefs.map(g => {
+      const list = iv.filter(v => v.it.g === g.g);
+      return { g, list, amt: list.reduce((a, v) => a + v.amt, 0), pr: list.reduce((a, v) => a + v.pr, 0) };
+    });
+    const gTot = gsum.reduce((a, x) => a + x.amt, 0);
+    const allOpen = gdefs.every(g => st.open[g.g]);
+    const groupsV = gsum.map(x => {
+      const isOpen = !!st.open[x.g.g], p = this.pct(x.amt, x.pr);
+      return {
+        wrapStyle: '',
+        letter: x.g.g, title: x.g.name.slice(3),
+        badge: 'width: 26px; height: 26px; flex: none; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; ' + ({ A: 'background: #624f3d; color: #ffffff;', B: 'background: #9c8570; color: #ffffff;', C: 'background: #c4b799; color: #3d3025;' }[x.g.g] || ''),
+        name: x.g.name, isOpen, open: isOpen ? 'true' : 'false',
+        toggle: () => this.setState({ open: Object.assign({}, this.state.open, { [x.g.g]: !isOpen }) }),
+        chevStyle: 'flex: none; color: #76634f; transition: transform .2s; transform: rotate(' + (isOpen ? 90 : 0) + 'deg);',
+        share: (x.amt / gTot * 100).toFixed(1) + '%', amt: this.money(x.amt),
+        pct: this.pctText(p), pctStyle: this.pctStyle(p, ' font-size: 13px;'),
+        items: x.list.map(v => {
+          const q = this.pct(v.amt, v.pr);
+          const code = v.it.name.split('.')[0], iOpen = !!this.state.openItem[code];
+          // sample split of the item's spend across its programs (fixed weights, larger first)
+          const w = v.it.subs.map((_, k) => 1 / (k + 1.6)), ws = w.reduce((a, b) => a + b, 0);
+          return { name: v.it.name, code, amt: this.money(v.amt), share: (v.amt / gTot * 100).toFixed(1) + '%', pct: this.pctText(q), pctStyle: this.pctStyle(q, ' width: 76px; text-align: right; font-size: 12px;'),
+            isOpen: iOpen, open: iOpen ? 'true' : 'false',
+            toggle: () => this.setState({ openItem: Object.assign({}, this.state.openItem, { [code]: !iOpen }) }),
+            chevStyle: 'flex: none; color: #76634f; transition: transform .2s; transform: rotate(' + (iOpen ? 90 : 0) + 'deg);',
+            subs: v.it.subs.map((nm, k) => ({ name: nm, amt: this.money(v.amt * w[k] / ws), share: (w[k] / ws * 100).toFixed(0) + '%' })) };
+        })
+      };
+    });
+    const panels = groupsV.map(g => ({ groups: [g] }));
+    const toggleAll = () => {
+      const o = {}; gdefs.forEach(g => { o[g.g] = !allOpen; });
+      this.setState({ open: o });
+    };
+    const amtHead = { Day: 'AMOUNT · TODAY', Week: 'AMOUNT · WTD', Month: 'AMOUNT · MTD' }[tab] || 'AMOUNT';
+
+    // top 5
+    const seedKey = { Day: 1, Week: 2, Month: 3 }[tab] || 1;
+    const tr = this.rng(seedKey * 7919);
+    const mult = { Day: 1, Week: 2.6, Month: 7.5 }[tab] || 1;
+    const tierPool = ['V+', 'ONE', 'ONE', 'ONE+', 'ONE+', 'EC'];
+    const tierCol = { 'V+': '#e59f38', 'ONE': '#c62127', 'ONE+': '#601a19', 'EC': '#142e39' };
+    const tierText = { 'V+': '#3d3025', 'ONE': '#ffffff', 'ONE+': '#ffffff', 'EC': '#ffffff' };
+    const natPool = ['Chinese', 'Chinese', 'Korean', 'Korean', 'Malaysian', 'Singaporean', 'O.Vietnamese', 'Others'];
+    const mkList = (base) => {
+      let amt = base * mult * (0.9 + tr() * .2);
+      const out = [];
+      for (let i = 0; i < 5; i++) {
+        const t = tierPool[Math.floor(tr() * tierPool.length)];
+        out.push({
+          rank: i + 1, mb: String(Math.floor(100 + tr() * 59900)), tier: t,
+          tierStyle: 'justify-self: start; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: ' + tierCol[t] + '; color: ' + tierText[t] + ';',
+          nat: natPool[Math.floor(tr() * natPool.length)], amt: this.money(amt)
+        });
+        amt = amt * (0.62 + tr() * .2);
+      }
+      return out;
+    };
+    const tops = [
+      { title: 'TOP 5 LOSS', col: 'PLAYER LOSS', list: mkList(86000) },
+      { title: 'TOP 5 WIN', col: 'PLAYER WIN', list: mkList(64000) }
+    ];
+
+    return {
+      tabs, sum, donut, scope: W.scope, cmpShort: W.cmp,
+      notCal: tab !== 'Calendar' && tab !== 'Strategic Track', isCal: tab === 'Calendar', isAlloc: tab === 'Strategic Track', notAlloc: tab !== 'Strategic Track',
+      heroStyle: tab === 'Strategic Track'
+        ? 'background: #624f3d; color: #ffffff; padding: 22px 32px 6px;'
+        : 'background: radial-gradient(600px 220px at 85% 0%, rgba(241,202,109,.22), transparent 70%), linear-gradient(160deg,#624f3d,#4b3b2d 55%,#3d3025); color: #ffffff; padding: 28px 40px 96px; border-radius: 0 0 36px 36px;',
+      chartSub, splitBtns, bars, lineD, dots, grid,
+      barGridStyle: 'position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: grid; grid-template-columns: ' + cols + ';',
+      xGridStyle: 'display: grid; grid-template-columns: ' + cols + '; margin: 2px 60px 0 52px;',
+      xLabels: bk.map((b, i) => ({ text: i === cur ? curName : b.label, style: i === cur ? 'font-size: 10px; font-weight: 700; letter-spacing: .06em; color: #ffffff; background: #3d3025; padding: 3px 8px; border-radius: 999px; white-space: nowrap' : 'font-size: 10px; color: #76634f; white-space: nowrap; padding: 3px 0' })),
+      tip, hoverOut: () => this.setState({ hover: -1 }),
+      legend: keys.map(k => ({ name: k.k, c: k.c })),
+      weekdays: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'], cal, calTitle, calSub, calMetricBtns, monthTabs,
+      calMetricName: isHcM ? 'headcount' : 'expense', calOtherName: isHcM ? 'expense' : 'headcount', shadeKey: shades,
+      panels, toggleAll, toggleAllLabel: allOpen ? 'Collapse all' : 'Expand all', amtHead, tops
+    };
+  }
+}
+return Component;
+})();
+COMPONENTS.StrategicTrack = (function () {
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { incD: false, period: "Month", open: {}, hov: null };
+}
+renderVals() {
+var self = this;
+var GROUPS = {
+A: { title: "A. Customer Relationship & Loyalty", short: "Relationship & Loyalty", color: "#624f3d", ink: "#ffffff" },
+B: { title: "B. Customer Acquisition & Development", short: "Acquisition & Development", color: "#9c8570", ink: "#ffffff" },
+C: { title: "C. Customer Experience & Engagement", short: "Experience & Engagement", color: "#c4b799", ink: "#3d3025" },
+D: { title: "D. Hidden Jackpot", short: "Hidden Jackpot", color: "#dcae48", ink: "#3d3025" }
+};
+// Strategic priorities: set by BOD for each period (sample: A1 and B2 for Nov 2026)
+var PRIORITY = { A1: true, B2: true };
+// Allocated share of budget by group (sample plan)
+var ALLOC = { A: 48, B: 22, C: 30, D: 10 };
+var ALL = [
+{ id: "A1", g: "A", name: "Customer Retention", plan: 88, act: 82, share: 22,
+obj: ["Return rate of targeted members", "Targeted members who returned in the period ÷ targeted members"],
+programs: ["Rebate on Loss"] },
+{ id: "A2", g: "A", name: "Membership & Loyalty", plan: 73, act: 70, share: 10,
+obj: ["Tier maintain + upgrade rate", "Members who kept or moved up a tier ÷ members reviewed"],
+programs: ["Benefit", "Birthday", "Premium CP", "Host MBship Program"] },
+{ id: "A3", g: "A", name: "Special Care", plan: 80, act: 74, share: 9,
+obj: ["VIP visit frequency vs last period", "Avg visits per cared guest this period ÷ last period"],
+programs: ["Additional WDC", "Double RL WDC"] },
+{ id: "A4", g: "A", name: "Birthday & Anniversary", plan: 60, act: 64, share: 5,
+obj: ["Visit in offer window", "Eligible guests visiting in the offer window ÷ eligible guests"],
+programs: ["Signature gift", "Host gift"] },
+{ id: "B1", g: "B", name: "Customer Acquisition", plan: 62, act: 55, share: 9,
+obj: ["2nd visit within 30 days", "New members returning within 30 days ÷ new members"],
+programs: ["Elite Coupon", "New MB Welcome VC"] },
+{ id: "B2", g: "B", name: "Reactivation", plan: 48, act: 40, share: 7,
+obj: ["Still active 30 days after return", "Reactivated guests visiting again within 30 days ÷ reactivated"],
+programs: ["Dormant VC", "Welcome back VC", "Welcome Promotion VC"] },
+{ id: "C1", g: "C", name: "Experience-driven", plan: 76, act: 83, share: 15, brand: true,
+obj: ["Theo uplift vs normal days", "Participant theo on event days ÷ same guests' normal-day theo"],
+programs: ["Tournament", "Golden Week", "One Shot", "Race to 8"] },
+{ id: "C2", g: "C", name: "Travel & Accessibility", plan: 70, act: 72, share: 8, brand: true,
+obj: ["Theo of served guests ÷ service cost", "Theo of guests using car, flight, hotel ÷ C2 spend (×)"],
+programs: ["Transportation", "Airport", "Hotel"] },
+{ id: "C3", g: "C", name: "Seasonal & Tactical", plan: 55, act: 50, share: 5, brand: true,
+obj: ["Visit uplift vs baseline", "Campaign-period visits ÷ 4-week baseline"],
+programs: ["Daily Lucky Draw", "VG Membership Day", "Point Pyramid", "PP Consolation", "VIP Cash", "Super Thursday", "Slot FGCP", "Table", "QR Bonus", "Coupon Day", "Door Gift", "Customer Care VC"] },
+{ id: "D", g: "D", name: "Hidden Jackpot", plan: 65, act: 66, share: 10,
+obj: ["Theo uplift in jackpot hours", "Theo in jackpot windows ÷ same hours without jackpot"],
+programs: ["Ppochi (cash)", "Hot Seat Sunday $1,388", "Tuesday $888", "Hot Seat Flashcard $200"] }
+];
+var incD = this.state.incD;
+var items = ALL.filter(function (x) { return incD || x.g !== "D"; });
+var byId = {}; items.forEach(function (x) { byId[x.id] = x; });
+var totalShare = items.reduce(function (s, x) { return s + x.share; }, 0);
+var openMap = this.state.open || {};
+var gKeys = ["A", "B", "C", "D"].filter(function (g) { return items.some(function (x) { return x.g === g; }); });
+
+// ---------- hover state ----------
+var hov = this.state.hov;
+if (hov && (hov.k === "i" || hov.k === "p") && !byId[hov.id]) hov = null;
+if (hov && (hov.k === "g" || hov.k === "m") && gKeys.indexOf(hov.id) < 0) hov = null;
+var hovItem = hov && (hov.k === "i" || hov.k === "p") ? hov.id : null;
+var hovGroup = hov ? (hovItem ? byId[hovItem].g : hov.id) : null;
+function setHov(h) {
+return function () {
+var c = self.state.hov;
+if (!c || c.k !== h.k || c.id !== h.id || c.p !== h.p) self.setState({ hov: h });
+};
+}
+var clearHov = function () { if (self.state.hov) self.setState({ hov: null }); };
+function isActive(x) { return !hov ? true : hovItem ? x.id === hovItem : x.g === hovGroup; }
+function openGroup(g, h) { return function () { var o = Object.assign({}, self.state.open || {}); o[g] = true; self.setState({ open: o, hov: h }); }; }
+var FADE = "transition:opacity .15s,transform .15s;";
+
+function statusOf(x) {
+var d = x.act - x.plan;
+if (d > 3) return { k: "over", label: "▲ Over plan", chip: "display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:#fbe3e3;box-shadow:inset 0 0 0 1px #efb3b3;color:#b0151c;white-space:nowrap", dark: "font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:#b0151c;color:#ffffff", bar: "#b0151c", dot: "background:#b0151c" };
+if (d < -6) return { k: "under", label: "▼ Under pace", chip: "display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:#fff4d6;box-shadow:inset 0 0 0 1px #e8c97a;color:#8a5a00;white-space:nowrap", dark: "font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:#f1ca6d;color:#3d3025", bar: "#e8c97a", dot: "background:#ffffff" };
+return { k: "on", label: "On track", chip: "display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;background:#f0e9d8;color:#4d3d2e;white-space:nowrap", dark: "font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.16);color:#ffffff", bar: "linear-gradient(90deg,#f8dd93,#dcae48)", dot: "background:#dcae48" };
+}
+function groupStats(g) {
+var gi = items.filter(function (x) { return x.g === g; });
+var gs = gi.reduce(function (s, x) { return s + x.share; }, 0), gu = 0, gp = 0, c = { on: 0, over: 0, under: 0 }, prN = 0, risk = 0;
+gi.forEach(function (x) { gu += x.act * x.share; gp += x.plan * x.share; var k = statusOf(x).k; c[k]++; if (PRIORITY[x.id]) { prN++; if (k !== "on") risk++; } });
+var used = Math.round(gu / gs), plan = Math.round(gp / gs);
+return { items: gi, share: gs, used: used, plan: plan, c: c, prN: prN, risk: risk, st: statusOf({ act: used, plan: plan }) };
+}
+
+// ---------- pace map ----------
+var cx = 290, cy = 270, R = 195, n = items.length, step = 360 / n;
+function pt(v, i, rad) {
+var a = (-90 + i * step) * Math.PI / 180, rr = (rad || R) * v / 100;
+return [cx + rr * Math.cos(a), cy + rr * Math.sin(a)];
+}
+function poly(f) { return items.map(function (x, i) { var p = pt(f(x), i); return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" "); }
+function groupIdx(g) { var idx = []; items.forEach(function (x, i) { if (x.g === g) idx.push(i); }); return idx; }
+function arcFor(g) {
+var idx = groupIdx(g);
+if (!idx.length) return "";
+var s = idx[0], e = idx[idx.length - 1], R2 = R + 16;
+var a0 = (-90 + (s - 0.42) * step) * Math.PI / 180, a1 = (-90 + (e + 0.42) * step) * Math.PI / 180;
+var large = (a1 - a0) > Math.PI ? 1 : 0;
+return "M" + (cx + R2 * Math.cos(a0)).toFixed(1) + " " + (cy + R2 * Math.sin(a0)).toFixed(1) + " A" + R2 + " " + R2 + " 0 " + large + " 1 " + (cx + R2 * Math.cos(a1)).toFixed(1) + " " + (cy + R2 * Math.sin(a1)).toFixed(1);
+}
+function arcOp(g) { return !hovGroup || hovGroup === g ? "1" : "0.25"; }
+var axesPath = items.map(function (x, i) { var p = pt(100, i); return "M" + cx + " " + cy + " L" + p[0].toFixed(1) + " " + p[1].toFixed(1); }).join("");
+var hovIdx = hovItem ? items.findIndex(function (x) { return x.id === hovItem; }) : -1;
+var hovEnd = hovIdx >= 0 ? pt(100, hovIdx) : [cx, cy];
+
+var badgePos = {};
+var arcBadges = gKeys.map(function (g) {
+var idx = groupIdx(g), mid = (idx[0] + idx[idx.length - 1]) / 2;
+var midOff = idx.length % 2 === 1 ? 0.38 : 0;
+var p = pt(100, mid + midOff, R + 16);
+badgePos[g] = p;
+var dim = hovGroup && hovGroup !== g;
+var big = hov && hov.k === "g" && hov.id === g;
+return { letter: g, aria: GROUPS[g].title,
+hover: setHov({ k: "g", id: g }), open: openGroup(g, { k: "g", id: g }),
+style: FADE + "opacity:" + (dim ? ".3" : "1") + ";transform:scale(" + (big ? "1.25" : "1") + ");border:0;padding:0;margin:0;cursor:pointer;font-family:Montserrat,sans-serif;position:absolute;width:22px;height:22px;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;box-shadow:0 0 0 2px #ffffff;left:" + (p[0] - 11).toFixed(1) + "px;top:" + (p[1] - 11).toFixed(1) + "px;background:" + GROUPS[g].color + ";color:" + GROUPS[g].ink };
+});
+
+var dotPos = {};
+var dots = items.map(function (x, i) {
+var p = pt(x.act, i), st = statusOf(x), on = x.id === hovItem, pr = !!PRIORITY[x.id], size = on ? 18 : 13;
+dotPos[x.id] = p;
+var inner = st.k === "under" ? "inset 0 0 0 3px #c98a12," : "";
+var outer = pr ? (st.k !== "on" ? "0 0 0 3px #b0151c,0 0 0 5px #ffffff" : "0 0 0 3px #dcae48,0 0 0 5px #ffffff") : "0 0 0 2px #ffffff";
+var ring = "box-shadow:" + inner + outer;
+return {
+aria: x.id + " " + x.name + ", used " + x.act + "% of budget, plan " + x.plan + "%" + (pr ? ", Strategic Priority" : ""),
+hover: setHov({ k: "i", id: x.id }), open: openGroup(x.g, { k: "i", id: x.id }),
+style: FADE + "opacity:" + (isActive(x) ? "1" : ".22") + ";position:absolute;padding:0;border:0;border-radius:999px;cursor:pointer;z-index:2;width:" + size + "px;height:" + size + "px;left:" + (p[0] - size / 2).toFixed(1) + "px;top:" + (p[1] - size / 2).toFixed(1) + "px;" + st.dot + ";" + ring
+};
+});
+var labels = items.map(function (x, i) {
+var p = pt(100, i, R + 40), on = x.id === hovItem, pr = !!PRIORITY[x.id];
+var risk = pr && statusOf(x).k !== "on";
+var look = on ? "background:#3d3025;color:#ffffff" : risk ? "background:#b0151c;color:#ffffff" : pr ? "background:#dcae48;color:#3d3025" : "background:transparent;color:#4d3d2e";
+return {
+text: risk ? "⚠ " + x.id : pr ? "★ " + x.id : x.id, hover: setHov({ k: "i", id: x.id }), open: openGroup(x.g, { k: "i", id: x.id }),
+style: FADE + "opacity:" + (isActive(x) ? "1" : ".3") + ";position:absolute;width:52px;height:26px;margin:0;padding:0;border:0;border-radius:999px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:12px;font-weight:700;left:" + (p[0] - 26).toFixed(1) + "px;top:" + (p[1] - 13).toFixed(1) + "px;" + look
+};
+});
+
+// floating callout that follows the hovered point
+var tip = { show: false };
+var tipBase = "position:absolute;z-index:5;pointer-events:none;display:flex;flex-direction:column;gap:4px;padding:10px 12px;border-radius:12px;background:#2b2119;box-shadow:0 12px 28px -10px rgba(30,18,8,.55);";
+function placeTip(p) {
+var right = p[0] > 300;
+return tipBase + "left:" + p[0].toFixed(1) + "px;top:" + p[1].toFixed(1) + "px;transform:" + (right ? "translate(calc(-100% - 16px),-50%)" : "translate(16px,-50%)");
+}
+if (hov && hov.k === "i" && dotPos[hov.id]) {
+var tx = byId[hov.id], tst = statusOf(tx);
+tip = { show: true, style: placeTip(dotPos[hov.id]), kicker: GROUPS[tx.g].title.toUpperCase(), title: tx.id + " · " + tx.name, act: tx.act + "%", plan: tx.plan + "%", status: tst.label, chip: tst.dark, priority: !!PRIORITY[tx.id] };
+} else if (hov && hov.k === "g" && badgePos[hov.id]) {
+var gsx = groupStats(hov.id);
+tip = { show: true, style: placeTip(badgePos[hov.id]), kicker: "GROUP · " + gsx.items.length + " ITEMS", title: GROUPS[hov.id].title, act: gsx.used + "%", plan: gsx.plan + "%", status: gsx.st.label, chip: gsx.st.dark, priority: gsx.prN > 0 };
+}
+
+var groupLegend = gKeys.map(function (g) {
+var dim = hovGroup && hovGroup !== g;
+return { letter: g, title: GROUPS[g].short, badge: "width:20px;height:20px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;background:" + GROUPS[g].color + ";color:" + GROUPS[g].ink, rowStyle: FADE + "display:flex;align-items:center;gap:6px;opacity:" + (dim ? ".35" : "1") };
+});
+
+// ---------- totals ----------
+var cnt = { on: 0, over: 0, under: 0 };
+items.forEach(function (x) { cnt[statusOf(x).k]++; });
+var wUsed = 0, wPlan = 0;
+items.forEach(function (x) { wUsed += x.act * x.share; wPlan += x.plan * x.share; });
+
+function badgeStyle(g, size) { return "width:" + size + "px;height:" + size + "px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:" + (size > 24 ? 13 : 11) + "px;font-weight:700;background:" + GROUPS[g].color + ";color:" + GROUPS[g].ink; }
+// ---------- spend mix vs plan (beside the map) ----------
+var allocTotal = gKeys.reduce(function (s, g) { return s + ALLOC[g]; }, 0);
+var cum = 0, mixTip = { show: false };
+var mix = gKeys.map(function (g) {
+var gs = items.filter(function (x) { return x.g === g; }).reduce(function (s, x) { return s + x.share; }, 0);
+var pct = Math.round(gs / totalShare * 100);
+var alloc = Math.round(ALLOC[g] / allocTotal * 100), d = pct - alloc;
+var center = cum + pct / 2; cum += pct;
+var dim = hovGroup && hovGroup !== g;
+if (hov && hov.k === "m" && hov.id === g) {
+mixTip = { show: true, title: GROUPS[g].title, pct: pct + "%", alloc: alloc + "%", delta: (d > 0 ? "+" + d : d < 0 ? "−" + Math.abs(d) : "±0") + " pts vs plan",
+style: "position:absolute;z-index:5;pointer-events:none;bottom:calc(100% + 8px);left:" + Math.min(80, Math.max(20, center)).toFixed(1) + "%;transform:translateX(-50%);display:flex;flex-direction:column;gap:3px;padding:9px 12px;border-radius:12px;background:#2b2119;box-shadow:0 12px 28px -10px rgba(30,18,8,.55)" };
+}
+return {
+title: GROUPS[g].title + " · " + pct + "% of actual spend", letter: g, short: GROUPS[g].short, pct: pct + "%", alloc: alloc + "%",
+delta: d === 0 ? "on plan" : (d > 0 ? "+" + d : "−" + Math.abs(d)) + " pts vs plan",
+hover: setHov({ k: "m", id: g }),
+badge: badgeStyle(g, 22),
+rowStyle: FADE + "display:flex;flex-direction:column;gap:6px;cursor:default;opacity:" + (dim ? ".35" : "1"),
+barStyle: "position:absolute;left:0;top:0;bottom:0;border-radius:999px;width:" + pct + "%;background:" + GROUPS[g].color,
+markStyle: "position:absolute;top:-3px;bottom:-3px;width:2px;border-radius:2px;background:#4d3d2e;left:calc(" + alloc + "% - 1px)",
+markLabel: "position:absolute;top:11px;left:" + alloc + "%;transform:translateX(" + (alloc > 85 ? "-100%" : "-50%") + ");font-size:9px;font-weight:600;line-height:1;color:#76634f;white-space:nowrap"
+};
+});
+
+// ---------- detail by group ----------
+var DONUT = ["#dcae48", "#9c8570", "#c4b799", "#624f3d"];
+var SPLIT = { 1: [100], 2: [62, 38], 3: [48, 32, 20] };
+var CIRC = 2 * Math.PI * 46;
+
+// sample Objective KPI per item: [actual, target, unit]
+var KPI = {
+A1: [62, 65, "%"], A2: [78, 75, "%"], A3: [1.08, 1.10, "x"], A4: [54, 50, "%"],
+B1: [31, 35, "%"], B2: [22, 30, "%"],
+C1: [1.35, 1.25, "x"], C2: [4.2, 4.0, "x"], C3: [1.12, 1.15, "x"],
+D: [1.18, 1.20, "x"]
+};
+function kpiFmt(v, u) { return u === "%" ? Math.round(v) + "%" : v.toFixed(2) + "×"; }
+var allOpen = gKeys.every(function (g) { return !!openMap[g]; });
+var groups = gKeys.map(function (g) {
+var S = groupStats(g);
+var expanded = !!openMap[g];
+var dimCard = hovGroup && hovGroup !== g;
+var chips = [];
+if (S.prN) chips.push({ label: "★ " + S.prN + " Strategic Priority", style: "font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:#dcae48;color:#3d3025;white-space:nowrap" });
+if (S.risk) chips.push({ label: "⚠ " + S.risk + " priority at risk", style: "font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:#b0151c;color:#ffffff;white-space:nowrap" });
+if (S.c.on) chips.push({ label: S.c.on + " on track", style: "font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;background:#f0e9d8;color:#4d3d2e;white-space:nowrap" });
+if (S.c.over) chips.push({ label: "▲ " + S.c.over + " over plan", style: "font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:#fbe3e3;box-shadow:inset 0 0 0 1px #efb3b3;color:#b0151c;white-space:nowrap" });
+if (S.c.under) chips.push({ label: "▼ " + S.c.under + " under pace", style: "font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;background:#fff4d6;box-shadow:inset 0 0 0 1px #e8c97a;color:#8a5a00;white-space:nowrap" });
+return {
+letter: g, title: GROUPS[g].title.slice(3),
+sub: S.items.length + " items",
+used: S.used + "%", plan: S.plan + "%",
+badge: badgeStyle(g, 30),
+hover: setHov({ k: "g", id: g }),
+expanded: expanded, expandedStr: expanded ? "true" : "false",
+toggle: function () { var o = Object.assign({}, self.state.open || {}); o[g] = !o[g]; self.setState({ open: o }); },
+chevron: "flex-shrink:0;transition:transform .2s;transform:rotate(" + (expanded ? "180deg" : "0deg") + ")",
+wrapStyle: "border-radius:22px;background:#ffffff;" + (S.prN ? "box-shadow:inset 0 0 0 1.5px #dcae48,0 8px 22px -12px rgba(98,79,61,.38)" : "box-shadow:inset 0 0 0 1px rgba(98,79,61,.08),0 8px 22px -12px rgba(98,79,61,.38)"),
+statusChip: S.st.chip, statusLabel: S.st.label,
+barStyle: "position:absolute;left:0;top:0;bottom:0;border-radius:999px;width:" + S.used + "%;background:" + GROUPS[g].color,
+markStyle: "position:absolute;top:-3px;bottom:-3px;width:2px;border-radius:2px;background:#4d3d2e;left:calc(" + S.plan + "% - 1px)",
+markLabel: "position:absolute;top:11px;left:" + S.plan + "%;transform:translateX(" + (S.plan > 85 ? "-100%" : "-50%") + ");font-size:10px;font-weight:600;line-height:1;color:#76634f;white-space:nowrap",
+chips: chips,
+rows: S.items.map(function (x) {
+var st = statusOf(x), on = x.id === hovItem, pr = !!PRIORITY[x.id];
+var dimRow = hovItem && hovGroup === g && !on;
+// sample split across programs, same weights as Daily Tracking (earlier programs take more)
+var wts = x.programs.map(function (_, k) { return 1 / (k + 1.6); }), wsum = wts.reduce(function (a, b) { return a + b; }, 0);
+var sp = wts.map(function (w) { return Math.round(w / wsum * 100); });
+sp[0] += 100 - sp.reduce(function (a, b) { return a + b; }, 0);
+// donut: first 3 programs get their own slice, the rest share a 4th slice
+var grouped = sp.length > 4;
+var sl = grouped ? sp.slice(0, 3).concat([sp.slice(3).reduce(function (a, b) { return a + b; }, 0)]) : sp;
+function sliceOf(i) { return grouped && i >= 3 ? 3 : i; }
+var hp = hov && hov.k === "p" && hov.id === x.id ? hov.p : -1;
+var start = 0;
+var slices = [0, 1, 2, 3].map(function (i) {
+if (i >= sl.length) return { stroke: "none", w: "18", dash: "0 999", off: "0", op: "0", hover: setHov({ k: "i", id: x.id }) };
+var len = CIRC * sl[i] / 100;
+var on = hp >= 0 && sliceOf(hp) === i;
+var s = { stroke: DONUT[i], w: on ? "22" : "18", dash: Math.max(0, len - (sl.length > 1 ? 2 : 0)).toFixed(2) + " " + CIRC.toFixed(2), off: (-CIRC * start / 100).toFixed(2), op: "1", hover: setHov({ k: "p", id: x.id, p: i }) };
+start += sl[i];
+return s;
+});
+var ci = hp >= 0 ? hp : 0;
+return {
+code: pr ? "★ " + x.id : x.id, name: x.name, act: x.act + "%", plan: x.plan + "%", status: st.label, chipStyle: st.chip,
+atRisk: pr && st.k !== "on",
+hover: setHov({ k: "i", id: x.id }),
+codeStyle: "flex-shrink:0;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;" + (pr ? "background:#dcae48;color:#3d3025" : "background:#f0e9d8;color:#4d3d2e"),
+openStr: (self.state.openItem || {})[x.id] ? "true" : "false", isOpen: !!(self.state.openItem || {})[x.id],
+toggle: function () { var o = Object.assign({}, self.state.openItem || {}); o[x.id] = !o[x.id]; self.setState({ openItem: o }); },
+chevStyle: "flex-shrink:0;color:#76634f;transition:transform .2s;transform:rotate(" + ((self.state.openItem || {})[x.id] ? 90 : 0) + "deg)",
+kpiVal: kpiFmt(KPI[x.id][0], KPI[x.id][2]), kpiTarget: kpiFmt(KPI[x.id][1], KPI[x.id][2]),
+kpiNote: KPI[x.id][0] >= KPI[x.id][1] ? "✓ Met" : "Gap " + kpiFmt(KPI[x.id][1] - KPI[x.id][0], KPI[x.id][2]),
+kpiStyle: "font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;white-space:nowrap;" + (KPI[x.id][0] >= KPI[x.id][1] ? "background:#e7efe3;color:#2f6b3a" : "background:#f8e4e2;color:#b0151c"),
+kpiBar: "position:absolute;left:0;top:0;bottom:0;border-radius:999px;width:" + Math.min(100, KPI[x.id][0] / KPI[x.id][1] * 100).toFixed(1) + "%;background:" + (KPI[x.id][0] >= KPI[x.id][1] ? "linear-gradient(90deg,#f8dd93,#dcae48)" : "#9c8570"),
+rowStyle: "border-bottom:1px solid #efe9dc;min-width:0;display:flex;flex-direction:column;" + (on ? "background:rgba(241,202,109,.10);" : ""),
+barStyle: "position:absolute;left:0;top:0;bottom:0;border-radius:999px;width:" + x.act + "%;background:" + st.bar,
+markStyle: "position:absolute;top:-3px;bottom:-3px;width:2px;border-radius:2px;background:#4d3d2e;left:calc(" + x.plan + "% - 1px)",
+markLabel: "position:absolute;top:9px;left:" + x.plan + "%;transform:translateX(" + (x.plan > 85 ? "-100%" : "-50%") + ");font-size:9px;font-weight:600;line-height:1;color:#76634f;white-space:nowrap",
+objName: x.obj[0], objFormula: x.obj[1], brand: !!x.brand,
+d0: slices[0], d1: slices[1], d2: slices[2], d3: slices[3],
+centerPct: sp[ci] + "%", centerName: x.programs[ci],
+donutAria: "Spend by program for " + x.id + ": " + x.programs.map(function (p, i) { return p + " " + sp[i] + "%"; }).join(", "),
+legend: x.programs.map(function (p, i) {
+var focus = hp < 0 || sliceOf(hp) === sliceOf(i);
+return { name: p, pct: sp[i] + "%", w: sp[i] + "%", hover: setHov({ k: "p", id: x.id, p: i }),
+dot: "width:10px;height:10px;border-radius:999px;flex-shrink:0;background:" + DONUT[sliceOf(i)],
+style: FADE + "display:flex;align-items:center;gap:6px;padding:3px 6px;border-radius:8px;cursor:default;font-size:11px;color:#4d3d2e;" + (hp >= 0 && sliceOf(hp) === sliceOf(i) ? "background:#faf8f4;font-weight:700" : "") };
+})
+};
+})
+};
+});
+
+// share-of-spend ring beside the pace map
+var RING_C = 2 * Math.PI * 52, ringCum = 0;
+var ring = gKeys.map(function (g) {
+var gs = items.filter(function (x) { return x.g === g; }).reduce(function (s, x) { return s + x.share; }, 0);
+var p = gs / totalShare * 100, len = RING_C * p / 100;
+var seg = { letter: g, short: GROUPS[g].short, pct: Math.round(p) + "%", color: GROUPS[g].color,
+dash: Math.max(0, len - 2.5).toFixed(2) + " " + RING_C.toFixed(2), off: (-RING_C * ringCum / 100).toFixed(2),
+w: hovGroup === g ? "22" : "18", hover: setHov({ k: "m", id: g }),
+badge: "width:24px;height:24px;flex-shrink:0;border-radius:999px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:" + GROUPS[g].color + ";color:" + GROUPS[g].ink };
+// callout: a leader from the slice to a label beside the ring (right half -> right, left half -> left)
+var mid = (ringCum + p / 2) / 100 * 2 * Math.PI - Math.PI / 2, CX = 280, CY = 160;
+var right = Math.cos(mid) >= 0, sx = CX + 112 * Math.cos(mid), sy = CY + 112 * Math.sin(mid);
+seg._c = { mid: mid, right: right, sx: sx, sy: sy, ly: CY + 128 * Math.sin(mid) };
+ringCum += p;
+return seg;
+});
+// keep labels on the same side at least 58px apart, then draw leaders and place labels
+[true, false].forEach(function (side) {
+var list = ring.filter(function (r) { return r._c.right === side; }).sort(function (a, b) { return a._c.ly - b._c.ly; });
+for (var k = 1; k < list.length; k++) { if (list[k]._c.ly - list[k - 1]._c.ly < 58) list[k]._c.ly = list[k - 1]._c.ly + 58; }
+for (var j = list.length - 1; j >= 0; j--) { var lim = j === list.length - 1 ? 292 : list[j + 1]._c.ly - 58; if (list[j]._c.ly > lim) list[j]._c.ly = lim; if (list[j]._c.ly < 28) list[j]._c.ly = 28; }
+});
+ring.forEach(function (seg) {
+var c = seg._c, CX = 280, ex = CX + (c.right ? 150 : -150);
+seg.lead = "M" + c.sx.toFixed(1) + " " + c.sy.toFixed(1) + " L" + (CX + 128 * Math.cos(c.mid)).toFixed(1) + " " + c.ly.toFixed(1) + " H" + ex;
+seg.labelStyle = "position:absolute;width:120px;display:flex;flex-direction:column;gap:4px;cursor:default;top:" + c.ly.toFixed(1) + "px;transform:translateY(-50%);" + (c.right ? "left:" + (ex + 8) + "px;align-items:flex-start;text-align:left" : "left:" + (ex - 128) + "px;align-items:flex-end;text-align:right");
+seg.headStyle = "display:flex;align-items:center;gap:6px;" + (c.right ? "" : "flex-direction:row-reverse");
+});
+var ringNone = { color: "none", w: "0", dash: "0 999", off: "0", lead: "", hover: clearHov };
+var priorityList = ALL.filter(function (x) { return PRIORITY[x.id] && (incD || x.g !== "D"); }).map(function (x) {
+var st = statusOf(x);
+return { label: "★ " + x.id + " " + x.name + " · " + st.label, style: "font-size:11px;font-weight:700;padding:5px 10px;border-radius:12px;line-height:1.35;max-width:100%;box-sizing:border-box;" + (st.k === "on" ? "background:#dcae48;color:#3d3025" : "background:#f8dd93;color:#3d3025;box-shadow:inset 0 0 0 2px #ffffff") };
+});
+
+// sample budget (USD): A–C $3.59M / month, Hidden Jackpot $0.70M / month
+var MONTH_BUDGET = incD ? 4290000 : 3590000;
+var budgetAmt = MONTH_BUDGET * ({ Week: 12 / 52, Month: 1, YTD: 11 }[self.state.period] || 1);
+function money(v) { return v >= 1e6 ? "$" + (v / 1e6).toFixed(2) + "M" : "$" + Math.round(v / 1e3) + "K"; }
+var periods = ["Week", "Month", "YTD"].map(function (p) {
+var on = self.state.period === p;
+return {
+label: p,
+pick: function () { self.setState({ period: p }); },
+style: "height:34px;padding:0 18px;border:0;border-radius:999px;cursor:pointer;font-family:Montserrat,sans-serif;font-size:13px;" + (on ? "font-weight:600;background:#ffffff;color:#4d3d2e;box-shadow:inset 0 1px 0 #ffffff,0 2px 10px rgba(40,25,10,.2)" : "font-weight:500;background:transparent;color:rgba(255,255,255,.88)")
+};
+});
+
+return {
+periods: periods,
+incDStr: incD ? "true" : "false",
+toggleD: function () { self.setState({ incD: !self.state.incD, hov: null }); },
+switchTrack: "position:relative;display:block;width:44px;height:28px;border-radius:999px;transition:background .2s;background:" + (incD ? "#dcae48" : "rgba(255,255,255,.25)"),
+switchKnob: "position:absolute;top:3px;width:22px;height:22px;border-radius:999px;background:#ffffff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:left .2s;left:" + (incD ? "19px" : "3px"),
+usedTotal: Math.round(wUsed / totalShare) + "%",
+spendTotal: money(budgetAmt * wUsed / totalShare / 100), budgetTotal: money(budgetAmt),
+periodName: { Week: "This week", Month: "Nov 2026", YTD: "2026 YTD" }[self.state.period] || "",
+planTotal: Math.round(wPlan / totalShare) + "%",
+itemCount: items.length, cntOn: cnt.on, cntOver: cnt.over, cntUnder: cnt.under,
+priorityList: priorityList,
+clearHov: clearHov,
+arcA: arcFor("A"), arcB: arcFor("B"), arcC: arcFor("C"), arcD: arcFor("D"),
+arcOpA: arcOp("A"), arcOpB: arcOp("B"), arcOpC: arcOp("C"), arcOpD: arcOp("D"),
+arcBadges: arcBadges, groupLegend: groupLegend,
+grid100: poly(function () { return 100; }), grid50: poly(function () { return 50; }),
+axesPath: axesPath, hovX: hovEnd[0].toFixed(1), hovY: hovEnd[1].toFixed(1), hovLineOp: hovIdx >= 0 ? "1" : "0",
+planPts: poly(function (x) { return x.plan; }), actPts: poly(function (x) { return x.act; }),
+dots: dots, labels: labels, tip: tip,
+groups: groups, mix: mix, mixTip: mixTip,
+ring: ring, ring0: ring[0] || ringNone, ring1: ring[1] || ringNone, ring2: ring[2] || ringNone, ring3: ring[3] || ringNone,
+toggleAllLabel: allOpen ? "Collapse all" : "Expand all",
+toggleAllGroups: function () { var o = {}; gKeys.forEach(function (g) { o[g] = !allOpen; }); self.setState({ open: o }); },
+mixAria: "Share of actual spend: " + mix.map(function (m) { return m.title; }).join("; ")
+};
+}
+}
+return Component;
+})();
+renderApp();
+</script>
+</body>
+</html>
